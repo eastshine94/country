@@ -6,7 +6,7 @@ export enum CountryTypes {
     FETCH_ALL_COUNTRY_FAILURE = 'country/FETCH_ALL_COUNTRY_FAILURE',
 }
 
-export interface FetchAllCountryRequestAction {
+export interface FetchAllCountryAction {
     type: CountryTypes.FETCH_ALL_COUNTRY_REQUEST;
 }
 
@@ -15,7 +15,7 @@ export interface FetchAllCountrySuccessAction {
     payload: Array<CountryResponseDto>
 }
 
-export type CountryActionTypes = FetchAllCountryRequestAction
+export type CountryActionTypes = FetchAllCountryAction
 | FetchAllCountrySuccessAction
 
 export const FetchCountry = () => ({

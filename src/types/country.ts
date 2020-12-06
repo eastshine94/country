@@ -3,5 +3,5 @@ export interface CountryResponseDto {
     name: string;
     capital: string;
     region: string;
-    callingCodes: string;
+    callingCodes: Array<string>;
 }
