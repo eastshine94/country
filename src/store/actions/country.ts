@@ -18,6 +18,10 @@ export interface FetchAllCountrySuccessAction {
 export type CountryActionTypes = FetchAllCountryAction
 | FetchAllCountrySuccessAction
 
-export const FetchCountry = () => ({
+export const fetchCountry = () => ({
     type: CountryTypes.FETCH_ALL_COUNTRY_REQUEST
-})
+});
+
+export const CountryActions = {
+    fetchCountry
+}

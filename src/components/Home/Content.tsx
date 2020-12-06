@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import { CountryResponseDto } from '~/types/country';
 
 const Wrapper = styled.main`
-    margin: auto;
+    margin: 30px auto;
     width: 80%;
     & table{
         width: 100%;
@@ -51,6 +51,10 @@ const Wrapper = styled.main`
         }
     }
 `;
+
+interface Props {
+    countries: Array<CountryResponseDto>
+}
 
 interface TableRowProps {
     alpha2Code: string;
@@ -108,7 +112,9 @@ const TableRow: React.FC<TableRowProps> = (props) => {
         </tr>
     )
 }
-const Content: React.FC = () => {
+const Content: React.FC<Props> = (props) => {
+    const {countries} = props;
+    const tableRows = countries.map((country, idx) => <TableRow {...country} callingCodes={country.callingCodes[0]} key={idx}/>)
     return(
         <Wrapper>
                 <table>
@@ -122,8 +128,7 @@ const Content: React.FC = () => {
                     </colgroup>
                     <TableHeader/>
                     <tbody>
-                        <TableRow alpha2Code="AF" name="Afghanistan" capital="Kabul" region="Americas" callingCodes="355"/>
-                        <TableRow alpha2Code="AF" name="Afghanistan" capital="Kabul" region="Americas" callingCodes="355"/>
+                        {tableRows}
                     </tbody>
                 </table>
             </Wrapper>
