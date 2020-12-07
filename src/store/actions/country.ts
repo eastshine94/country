@@ -5,6 +5,7 @@ export enum CountryTypes {
     FETCH_ALL_COUNTRY_SUCCESS = 'country/FETCH_ALL_COUNTRY_SUCCESS',
     FETCH_ALL_COUNTRY_FAILURE = 'country/FETCH_ALL_COUNTRY_FAILURE',
     CHANGE_SORT = 'country/CHANGE_SORT',
+    DELETE_COUNTRY = 'country.DELETE_COUNTRY',
 }
 
 export interface FetchAllCountryAction {
@@ -21,9 +22,15 @@ export interface ChangeSortAction {
     payload: ChangeSortDto;
 }
 
+export interface DeleteCountryAction {
+    type: CountryTypes.DELETE_COUNTRY;
+    payload: number;
+}
+
 export type CountryActionTypes = FetchAllCountryAction
 | FetchAllCountrySuccessAction
 | ChangeSortAction
+| DeleteCountryAction
 
 export const fetchCountry = () => ({
     type: CountryTypes.FETCH_ALL_COUNTRY_REQUEST
@@ -34,7 +41,13 @@ export const changeSort = (option: ChangeSortDto) => ({
     payload: option
 });
 
+export const deleteCountry = (idx: number) => ({
+    type: CountryTypes.DELETE_COUNTRY,
+    payload: idx
+})
+
 export const CountryActions = {
     fetchCountry,
-    changeSort
+    changeSort,
+    deleteCountry
 }

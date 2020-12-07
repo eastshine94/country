@@ -28,6 +28,14 @@ const countryReducer = (state=initialState, action: CountryActionTypes) => {
                 sortKey: action.payload.sortKey,
                 sortDirection: action.payload.sortDirection
             }
+        case CountryTypes.DELETE_COUNTRY:
+            const idx = action.payload;
+            const prevCountry = state.country.slice(0, idx);
+            const afterCountry = state.country.slice(idx+1);
+            return{
+                ...state,
+                country: [...prevCountry, ...afterCountry]
+            }
         default : 
             return state
     }
