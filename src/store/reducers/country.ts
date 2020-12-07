@@ -5,12 +5,14 @@ import { CountryTypes, CountryActionTypes } from '~/store/actions/country';
 
 export interface CountryState {
     country: Array<CountryDto>;
+    cursor: number;
     sortKey: SortKeyTypes;
     sortDirection: SortDirectionTypes;
 }
 
 const initialState: CountryState  = {
     country: [],
+    cursor: 20,
     sortKey: "name",
     sortDirection: "ASC"
 }
@@ -22,6 +24,12 @@ const countryReducer = (state=initialState, action: CountryActionTypes) => {
                 ...state,
                 country: action.payload
             }
+        case CountryTypes.SET_CURSOR :
+            return{
+                ...state,
+                cursor: action.payload
+            }
+        
         case CountryTypes.CHANGE_SORT:
             return {
                 ...state,

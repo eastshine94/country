@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -149,10 +149,9 @@ const TableRow: React.FC<TableRowProps> = (props) => {
 
 const TableContent:React.FC<TableContentProps> = (props) => {
     const { countryState } = props;
-    const { changeSort, deleteCountry } = props.countryActions;
-    const { sortKey, sortDirection } = countryState;
+    const { changeSort, deleteCountry, setCursor } = props.countryActions;
+    const { cursor, sortKey, sortDirection } = countryState;
     const countries = countryState.country;
-    const [cursor, setCursor] = useState(20);
 
     const renderCountries = countries.sort((a,b) => {
         if(sortDirection === "ASC"){

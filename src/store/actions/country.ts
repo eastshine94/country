@@ -4,6 +4,7 @@ export enum CountryTypes {
     FETCH_ALL_COUNTRY_REQUEST = 'country/FETCH_ALL_COUNTRY_REQUEST',
     FETCH_ALL_COUNTRY_SUCCESS = 'country/FETCH_ALL_COUNTRY_SUCCESS',
     FETCH_ALL_COUNTRY_FAILURE = 'country/FETCH_ALL_COUNTRY_FAILURE',
+    SET_CURSOR  = 'country/SET_CURSOR',
     CHANGE_SORT = 'country/CHANGE_SORT',
     DELETE_COUNTRY = 'country.DELETE_COUNTRY',
 }
@@ -15,6 +16,11 @@ export interface FetchAllCountryAction {
 export interface FetchAllCountrySuccessAction {
     type: CountryTypes.FETCH_ALL_COUNTRY_SUCCESS;
     payload: Array<CountryDto>
+}
+
+export interface SetCursorAction {
+    type: CountryTypes.SET_CURSOR;
+    payload: number;
 }
 
 export interface ChangeSortAction {
@@ -29,12 +35,18 @@ export interface DeleteCountryAction {
 
 export type CountryActionTypes = FetchAllCountryAction
 | FetchAllCountrySuccessAction
+| SetCursorAction
 | ChangeSortAction
 | DeleteCountryAction
 
 export const fetchCountry = () => ({
     type: CountryTypes.FETCH_ALL_COUNTRY_REQUEST
 });
+
+export const setCursor = (cursor: number) => ({
+    type: CountryTypes.SET_CURSOR,
+    payload: cursor
+})
 
 export const changeSort = (option: ChangeSortDto) => ({
     type: CountryTypes.CHANGE_SORT,
@@ -48,6 +60,7 @@ export const deleteCountry = (idx: number) => ({
 
 export const CountryActions = {
     fetchCountry,
+    setCursor,
     changeSort,
     deleteCountry
 }
