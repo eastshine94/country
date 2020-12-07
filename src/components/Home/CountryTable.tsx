@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { CountryDto } from '~/types/country';
+import { Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { CountryDto, SortKeyTypes, SortDirectionTypes, ChangeSortDto } from '~/types/country';
+import { RootState } from '~/store/reducers/index';
+import { CountryActions } from '~/store/actions/country';
+import { CountryState } from '~/store/reducers/country';
 
 const Wrapper = styled.section`
     & table{
@@ -57,42 +62,68 @@ const Wrapper = styled.section`
     }
 `;
 
+interface TableHeaderProps {
+    sortDirection: SortDirectionTypes;
+    sortKey: SortKeyTypes;
+    changeSort(option: ChangeSortDto): void;
+}
+
 interface TableRowProps extends CountryDto {
 }
 
 interface TableContentProps {
-    countries: Array<CountryDto>
+    countryActions: typeof CountryActions;
+    countryState: CountryState;
 }
 
-const TableHeader: React.FC = () => {
+const TableHeader: React.FC<TableHeaderProps> = (props) => {
+    const {sortDirection, sortKey} = props;
+    const { changeSort } = props;
+    const headerData:Array<{name: string, key: SortKeyTypes}> = [
+        {
+            name: "코드",
+            key: "alpha2Code"
+        },
+        {
+            name: "이름",
+            key: "name"
+        },
+        {
+            name: "수도",
+            key: "capital"
+        },
+        {
+            name: "대륙",
+            key: "region"
+        },
+        {
+            name: "전화번호",
+            key: "callingCodes"
+        },
+    ]
+    const headerCols = headerData.map((col) =>{
+        const renderIcon = col.key === sortKey ? (sortDirection === "ASC" ? <i className="fas fa-sort-up"/> : <i className="fas fa-sort-down"/>): null;
+        
+        const onHeaderClick = () => {
+            if(col.key === sortKey){
+                const direction = sortDirection === "ASC" ? "DESC" : "ASC";
+                changeSort({sortKey: col.key, sortDirection: direction });
+            }
+            else{
+                changeSort({sortKey: col.key, sortDirection:"ASC" });
+            }
+        }
+        return(
+            <th key={col.key} onClick={onHeaderClick}>
+                <span>{col.name}</span>
+                {renderIcon}
+            </th>
+        )
+    })
     return(
         <thead>
             <tr>
-                <th>
-                    <span>코드</span>
-                    <i className="fas fa-sort-down"/>
-                    <i className="fas fa-sort-up"/>
-                </th>
-                <th>
-                    <span>이름</span>
-                    <i className="fas fa-sort-down"/>
-                    <i className="fas fa-sort-up"/> 
-                </th>
-                <th>
-                    <span>수도</span>
-                    <i className="fas fa-sort-down"/>
-                    <i className="fas fa-sort-up"/>
-                </th>
-                <th>
-                    <span>대륙</span>
-                    <i className="fas fa-sort-down"/>
-                    <i className="fas fa-sort-up"/>
-                </th>
-                <th>
-                    <span>전화번호</span>
-                    <i className="fas fa-sort-down"/>
-                    <i className="fas fa-sort-up"/>
-                </th>
+                {headerCols}
                 <th/>
             </tr>
         </thead>
@@ -114,20 +145,52 @@ const TableRow: React.FC<TableRowProps> = (props) => {
 }
 
 const TableContent:React.FC<TableContentProps> = (props) => {
-    const {countries} = props;
-    const tableRows = countries.map((country, idx) => <TableRow {...country} key={idx}/>)
+    const { countryState } = props;
+    const { changeSort } = props.countryActions;
+    const { sortKey, sortDirection } = countryState;
+    const countries = countryState.country;
+    const [cursor, setCursor] = useState(20);
+
+    const renderCountries = countries.sort((a,b) => {
+        if(sortDirection === "ASC"){
+            return a[sortKey].localeCompare(b[sortKey]);
+        } 
+        return b[sortKey].localeCompare(a[sortKey]);
+    }).filter((country, idx) => idx < cursor);
+
+
+    const handleScroll = () => {
+        let currentScrollHeight = document.documentElement.scrollHeight;
+        let currentScrollTop = document.documentElement.scrollTop;
+        let currentClientHeight = document.documentElement.clientHeight;
+
+        if(currentScrollHeight - currentScrollTop === currentClientHeight){
+            if(countries.length >= cursor){
+                setCursor(cursor + 20);
+            }
+        }
+    }
+    useEffect(() => {
+        document.addEventListener("scroll", handleScroll);
+        return () => {
+            document.removeEventListener("scroll",handleScroll);
+        }
+    },[countries.length, cursor]);
+    
+    const tableRows = renderCountries.map((country, idx) => <TableRow {...country} key={idx}/>);
+
     return(
         <Wrapper>
             <table>
                 <colgroup>
-                    <col width="10%"/>
-                    <col width="28%"/>
+                    <col width="13%"/>
+                    <col width="23%"/>
                     <col width="22%"/>
                     <col width="16%"/>
                     <col width="18%"/>
-                    <col width="6%"/>
+                    <col width="8%"/>
                 </colgroup>
-                <TableHeader/>
+                <TableHeader {...countryState} changeSort= {changeSort}/>
                 <tbody>
                     {tableRows}
                 </tbody>
@@ -136,4 +199,15 @@ const TableContent:React.FC<TableContentProps> = (props) => {
     )
 }
 
-export default TableContent;
+const mapStateToProps = (state: RootState) => ({
+    countryState: state.country
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    countryActions: bindActionCreators(CountryActions, dispatch),
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TableContent);

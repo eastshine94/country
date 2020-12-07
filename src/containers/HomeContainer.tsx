@@ -17,17 +17,15 @@ interface Props {
     countryState: CountryState;
 }
 const HomeContainer:React.FC<Props> = (props) => {
-    const { countryState } = props
-    const { country } = countryState;
     const { fetchCountry } = props.countryActions;
-    useEffect( () => {
+    useEffect(() => {
         fetchCountry();
     },[]);
     
     return(
         <Wrapper>
             <Header/>
-            <Content countries={country}/>
+            <Content/>
         </Wrapper>
     )
 }
