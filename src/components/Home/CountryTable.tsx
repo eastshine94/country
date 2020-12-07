@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CountryResponseDto } from '~/types/country';
+import { CountryDto } from '~/types/country';
 
 const Wrapper = styled.section`
     & table{
@@ -57,16 +57,11 @@ const Wrapper = styled.section`
     }
 `;
 
-interface TableRowProps {
-    alpha2Code: string;
-    name: string;
-    capital: string;
-    region: string;
-    callingCodes: string;
+interface TableRowProps extends CountryDto {
 }
 
 interface TableContentProps {
-    countries: Array<CountryResponseDto>
+    countries: Array<CountryDto>
 }
 
 const TableHeader: React.FC = () => {
@@ -120,7 +115,7 @@ const TableRow: React.FC<TableRowProps> = (props) => {
 
 const TableContent:React.FC<TableContentProps> = (props) => {
     const {countries} = props;
-    const tableRows = countries.map((country, idx) => <TableRow {...country} callingCodes={country.callingCodes[0]} key={idx}/>)
+    const tableRows = countries.map((country, idx) => <TableRow {...country} key={idx}/>)
     return(
         <Wrapper>
             <table>

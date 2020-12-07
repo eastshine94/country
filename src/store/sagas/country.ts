@@ -1,6 +1,7 @@
 import {all, call, put, takeLatest} from 'redux-saga/effects';
 import { CountryTypes } from '~/store/actions/country';
 import { fetchAllCountry } from '~/apis/country';
+import { CountryResponseDto, CountryDto} from '~/types/country';
 
 export default function* countrySaga() {
     yield all([
@@ -10,10 +11,11 @@ export default function* countrySaga() {
 
 function* $fetchAllCountry() {
     try{
-        const countries = yield call(fetchAllCountry);
+        const countries: Array<CountryResponseDto> = yield call(fetchAllCountry);
+        const changeCountries: Array<CountryDto> = countries.map(country => ({...country, callingCodes: country.callingCodes[0]}))
         yield put({
             type: CountryTypes.FETCH_ALL_COUNTRY_SUCCESS,
-            payload: countries
+            payload: changeCountries
         });
     }catch(err){
         yield put({

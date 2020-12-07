@@ -1,10 +1,10 @@
-import {CountryResponseDto} from '~/types/country';
+import { CountryDto } from '~/types/country';
 import { CountryTypes, CountryActionTypes } from '~/store/actions/country';
 
 
 
 export interface CountryState {
-    country: Array<CountryResponseDto>
+    country: Array<CountryDto>
 }
 
 const initialState: CountryState  = {

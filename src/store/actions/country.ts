@@ -1,4 +1,4 @@
-import {CountryResponseDto} from '~/types/country';
+import {CountryDto} from '~/types/country';
 
 export enum CountryTypes {
     FETCH_ALL_COUNTRY_REQUEST = 'country/FETCH_ALL_COUNTRY_REQUEST',
@@ -12,7 +12,7 @@ export interface FetchAllCountryAction {
 
 export interface FetchAllCountrySuccessAction {
     type: CountryTypes.FETCH_ALL_COUNTRY_SUCCESS;
-    payload: Array<CountryResponseDto>
+    payload: Array<CountryDto>
 }
 
 export type CountryActionTypes = FetchAllCountryAction

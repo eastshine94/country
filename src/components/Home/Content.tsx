@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { CountryResponseDto } from '~/types/country';
+import { CountryDto } from '~/types/country';
 import CountryTable from './CountryTable';
 const Wrapper = styled.main`
     margin: 30px auto;
@@ -8,7 +8,7 @@ const Wrapper = styled.main`
 `;
 
 interface Props {
-    countries: Array<CountryResponseDto>
+    countries: Array<CountryDto>
 }
 
 const Content: React.FC<Props> = (props) => {
