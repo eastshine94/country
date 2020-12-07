@@ -7,6 +7,7 @@ export interface CountryResponseDto {
 }
 
 export interface CountryDto {
+    id: number;
     alpha2Code: string;
     name: string;
     capital: string;

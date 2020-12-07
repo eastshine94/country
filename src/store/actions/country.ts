@@ -89,9 +89,9 @@ export const addCountry = (country: CountryDto) => ({
     payload: country
 })
 
-export const deleteCountry = (idx: number) => ({
+export const deleteCountry = (id: number) => ({
     type: CountryTypes.DELETE_COUNTRY,
-    payload: idx
+    payload: id
 })
 
 export const CountryActions = {

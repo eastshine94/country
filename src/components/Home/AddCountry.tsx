@@ -81,6 +81,7 @@ interface Props {
 
 
 const AddCountry: React.FC<Props> = (props) => {
+    const counties = props.countryState.country;
     const { showAddCountry, addCountry } = props.countryActions;
     const [code, setCode] = useState("");
     const [name, setName] = useState("");
@@ -205,6 +206,7 @@ const AddCountry: React.FC<Props> = (props) => {
             const check = confirm("추가하시겠습니까?");
             if(check){
                 const country: CountryDto = {
+                    id: counties[counties.length - 1].id + 1,
                     alpha2Code: code.trim().toUpperCase(),
                     name: name.trim(),
                     capital: capital.trim(),

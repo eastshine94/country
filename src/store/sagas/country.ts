@@ -12,7 +12,7 @@ export default function* countrySaga() {
 function* $fetchAllCountry() {
     try{
         const countries: Array<CountryResponseDto> = yield call(fetchAllCountry);
-        const changeCountries: Array<CountryDto> = countries.map(country => ({...country, callingCodes: country.callingCodes[0]}))
+        const changeCountries: Array<CountryDto> = countries.map((country, idx) => ({...country, id: idx+1, callingCodes: country.callingCodes[0]}))
         yield put({
             type: CountryTypes.FETCH_ALL_COUNTRY_SUCCESS,
             payload: changeCountries

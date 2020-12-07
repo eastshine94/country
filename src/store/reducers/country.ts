@@ -55,12 +55,10 @@ const countryReducer = (state=initialState, action: CountryActionTypes) => {
                 country: [...state.country, action.payload]
             }
         case CountryTypes.DELETE_COUNTRY:
-            const idx = action.payload;
-            const prevCountry = state.country.slice(0, idx);
-            const afterCountry = state.country.slice(idx+1);
+            const countries = state.country.filter(country => country.id !== action.payload);
             return{
                 ...state,
-                country: [...prevCountry, ...afterCountry]
+                country: [...countries]
             }
         default : 
             return state

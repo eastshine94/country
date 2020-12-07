@@ -75,8 +75,7 @@ interface TableHeaderProps {
 }
 
 interface TableRowProps extends CountryDto {
-    idx: number;
-    deleteCountry(idx: number): void;
+    deleteCountry(id: number): void;
 }
 
 interface TableContentProps {
@@ -139,7 +138,7 @@ const TableHeader: React.FC<TableHeaderProps> = (props) => {
 }
 
 const TableRow: React.FC<TableRowProps> = (props) => {
-    const { idx, alpha2Code, name, capital, region, callingCodes} = props;
+    const { id, alpha2Code, name, capital, region, callingCodes} = props;
     const { deleteCountry } = props;
     return(
         <tr>
@@ -148,7 +147,7 @@ const TableRow: React.FC<TableRowProps> = (props) => {
             <td title={capital}>{capital}</td>
             <td title={region}>{region}</td>
             <td title={callingCodes}>{callingCodes}</td>
-            <td className="delete" onClick={() => deleteCountry(idx)}>X</td>
+            <td className="delete" onClick={() => deleteCountry(id)}>X</td>
         </tr>
     )
 }
@@ -157,7 +156,7 @@ const TableContent:React.FC<TableContentProps> = (props) => {
     const { countryState } = props;
     const { changeSort, deleteCountry, setCursor, showAddCountry } = props.countryActions;
     const { cursor, sortKey, sortDirection, search } = countryState;
-    const countries = countryState.country;
+    const countries = [...countryState.country];
 
     const renderCountries = countries.sort((a,b) => {
         if(sortDirection === "ASC"){
@@ -204,7 +203,7 @@ const TableContent:React.FC<TableContentProps> = (props) => {
         }
     },[countries.length, cursor]);
     
-    const tableRows = renderCountries.map((country, idx) => <TableRow {...country} idx={idx} deleteCountry={deleteCountry} key={idx}/>);
+    const tableRows = renderCountries.map((country) => <TableRow {...country} deleteCountry={deleteCountry} key={country.id}/>);
 
     return(
         <Wrapper>
