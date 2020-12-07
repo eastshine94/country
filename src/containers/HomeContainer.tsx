@@ -19,9 +19,12 @@ interface Props {
 }
 const HomeContainer:React.FC<Props> = (props) => {
     const {isShownAddCountry} = props.countryState;
-    const { fetchCountry } = props.countryActions;
+    const { fetchCountry, showAddCountry } = props.countryActions;
     useEffect(() => {
         fetchCountry();
+        return (() => {
+            showAddCountry(false);
+        });
     },[]);
     
     return(

@@ -1,5 +1,11 @@
-import React from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux';
+import { RootState } from '~/store/reducers/index';
+import { CountryActions } from '~/store/actions/country';
+import { CountryState } from '~/store/reducers/country';
+
 const Wrapper = styled.header`
     position: relative;
     width: 70%;
@@ -21,14 +27,47 @@ const Wrapper = styled.header`
         width: 100%;
     }
 `;
-const Header:React.FC = () => {
+
+interface Props {
+    countryState: CountryState;
+    countryActions: typeof CountryActions;
+}
+
+const Header:React.FC<Props> = (props) => {
+    const { search } = props.countryState;
+    const { setSearch } = props.countryActions;
+    
+    const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault();
+        const val = event.target.value;
+        setSearch(val);
+    }
+
+    useEffect(()=>{
+        return(() => {
+            setSearch("");
+        })
+    },[]);
+    
     return(
         <Wrapper>
             <form>
-                <input type="text" placeholder="검색어를 입력하세요."/>
+                <input value={search} onChange={onSearchChange} type="text" placeholder="검색어를 입력하세요."/>
             </form>
         </Wrapper>
     );
 }
 
-export default Header;
+const mapStateToProps = ( state: RootState ) => ({
+    countryState: state.country
+})
+
+const mapDispatchToProps = ( dispatch: Dispatch ) => ({
+    countryActions: bindActionCreators(CountryActions, dispatch)
+})
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Header);

@@ -156,7 +156,7 @@ const TableRow: React.FC<TableRowProps> = (props) => {
 const TableContent:React.FC<TableContentProps> = (props) => {
     const { countryState } = props;
     const { changeSort, deleteCountry, setCursor, showAddCountry } = props.countryActions;
-    const { cursor, sortKey, sortDirection } = countryState;
+    const { cursor, sortKey, sortDirection, search } = countryState;
     const countries = countryState.country;
 
     const renderCountries = countries.sort((a,b) => {
@@ -164,6 +164,25 @@ const TableContent:React.FC<TableContentProps> = (props) => {
             return a[sortKey].localeCompare(b[sortKey]);
         } 
         return b[sortKey].localeCompare(a[sortKey]);
+    }).filter((country) => {
+        if(search === "") return true;
+        const regExp = new RegExp(`^.*${search.toLowerCase()}.*$`);
+        const isCodeMatch = country.alpha2Code.toLowerCase().replace(/ /g,"").match(regExp);
+        if(isCodeMatch) return true;
+        
+        const isNameMatch = country.name.toLowerCase().replace(/ /g,"").match(regExp);
+        if(isNameMatch) return true;
+        
+        const isCapitalMatch = country.capital.toLowerCase().replace(/ /g,"").match(regExp);
+        if(isCapitalMatch) return true;
+
+        const isRegionMatch = country.region.toLowerCase().replace(/ /g,"").match(regExp);
+        if(isRegionMatch) return true;
+        
+        const isCallingMatch = country.callingCodes.toLowerCase().replace(/ /g,"").match(regExp);
+        if(isCallingMatch) return true;
+        
+        return false;
     }).filter((country, idx) => idx < cursor);
 
 
@@ -173,7 +192,7 @@ const TableContent:React.FC<TableContentProps> = (props) => {
         let currentClientHeight = document.documentElement.clientHeight;
 
         if(currentScrollHeight - currentScrollTop === currentClientHeight){
-            if(countries.length >= cursor){
+            if(renderCountries.length >= cursor){
                 setCursor(cursor + 20);
             }
         }

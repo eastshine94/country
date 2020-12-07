@@ -6,6 +6,7 @@ import { CountryTypes, CountryActionTypes } from '~/store/actions/country';
 export interface CountryState {
     country: Array<CountryDto>;
     cursor: number;
+    search: string;
     sortKey: SortKeyTypes;
     sortDirection: SortDirectionTypes;
     isShownAddCountry: boolean;
@@ -14,6 +15,7 @@ export interface CountryState {
 const initialState: CountryState  = {
     country: [],
     cursor: 20,
+    search: "",
     sortKey: "name",
     sortDirection: "ASC",
     isShownAddCountry: false,
@@ -31,7 +33,11 @@ const countryReducer = (state=initialState, action: CountryActionTypes) => {
                 ...state,
                 cursor: action.payload
             }
-        
+        case CountryTypes.SET_SEARCH :
+            return{
+                ...state,
+                search: action.payload
+            }
         case CountryTypes.CHANGE_SORT:
             return {
                 ...state,
