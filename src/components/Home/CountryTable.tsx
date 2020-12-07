@@ -27,7 +27,7 @@ const Wrapper = styled.section`
             cursor: pointer;
             & i {
                 position: absolute;
-                top: 10px;
+                top: 17px;
                 right: 8px;
             }
             &:last-child{

@@ -51,9 +51,7 @@ const Header:React.FC<Props> = (props) => {
     
     return(
         <Wrapper>
-            <form>
-                <input value={search} onChange={onSearchChange} type="text" placeholder="검색어를 입력하세요."/>
-            </form>
+            <input value={search} onChange={onSearchChange} type="text" placeholder="검색어를 입력하세요."/>
         </Wrapper>
     );
 }

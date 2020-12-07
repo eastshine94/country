@@ -14,7 +14,7 @@ export interface CountryState {
 
 const initialState: CountryState  = {
     country: [],
-    cursor: 20,
+    cursor: 30,
     search: "",
     sortKey: "name",
     sortDirection: "ASC",
