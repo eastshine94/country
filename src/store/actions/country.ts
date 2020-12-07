@@ -6,6 +6,8 @@ export enum CountryTypes {
     FETCH_ALL_COUNTRY_FAILURE = 'country/FETCH_ALL_COUNTRY_FAILURE',
     SET_CURSOR  = 'country/SET_CURSOR',
     CHANGE_SORT = 'country/CHANGE_SORT',
+    SHOW_ADD_COUNTRY = 'country/SHOW_ADD_COUNTRY',
+    ADD_COUNTRY = 'country/ADD_COUNTRY',
     DELETE_COUNTRY = 'country.DELETE_COUNTRY',
 }
 
@@ -28,6 +30,16 @@ export interface ChangeSortAction {
     payload: ChangeSortDto;
 }
 
+export interface ShowAddCountryAction {
+    type: CountryTypes.SHOW_ADD_COUNTRY;
+    payload: boolean
+}
+
+export interface AddCountryAction {
+    type: CountryTypes.ADD_COUNTRY;
+    payload: CountryDto;
+}
+
 export interface DeleteCountryAction {
     type: CountryTypes.DELETE_COUNTRY;
     payload: number;
@@ -37,6 +49,8 @@ export type CountryActionTypes = FetchAllCountryAction
 | FetchAllCountrySuccessAction
 | SetCursorAction
 | ChangeSortAction
+| ShowAddCountryAction
+| AddCountryAction
 | DeleteCountryAction
 
 export const fetchCountry = () => ({
@@ -53,6 +67,16 @@ export const changeSort = (option: ChangeSortDto) => ({
     payload: option
 });
 
+export const showAddCountry = (isShown: boolean) => ({
+    type: CountryTypes.SHOW_ADD_COUNTRY,
+    payload: isShown
+})
+
+export const addCountry = (country: CountryDto) => ({
+    type: CountryTypes.ADD_COUNTRY,
+    payload: country
+})
+
 export const deleteCountry = (idx: number) => ({
     type: CountryTypes.DELETE_COUNTRY,
     payload: idx
@@ -62,5 +86,7 @@ export const CountryActions = {
     fetchCountry,
     setCursor,
     changeSort,
+    showAddCountry,
+    addCountry,
     deleteCountry
 }

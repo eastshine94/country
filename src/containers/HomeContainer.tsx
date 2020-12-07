@@ -6,6 +6,7 @@ import { Header, Content } from '~/components/Home';
 import { RootState } from '~/store/reducers/index';
 import { CountryActions } from '~/store/actions/country';
 import { CountryState } from '~/store/reducers/country';
+import AddCountryContainer from './AddCountryContainer';
 
 const Wrapper = styled.div`
     width: 90%;
@@ -17,6 +18,7 @@ interface Props {
     countryState: CountryState;
 }
 const HomeContainer:React.FC<Props> = (props) => {
+    const {isShownAddCountry} = props.countryState;
     const { fetchCountry } = props.countryActions;
     useEffect(() => {
         fetchCountry();
@@ -24,6 +26,7 @@ const HomeContainer:React.FC<Props> = (props) => {
     
     return(
         <Wrapper>
+            {isShownAddCountry ? <AddCountryContainer/> : null}
             <Header/>
             <Content/>
         </Wrapper>

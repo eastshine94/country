@@ -8,13 +8,15 @@ export interface CountryState {
     cursor: number;
     sortKey: SortKeyTypes;
     sortDirection: SortDirectionTypes;
+    isShownAddCountry: boolean;
 }
 
 const initialState: CountryState  = {
     country: [],
     cursor: 20,
     sortKey: "name",
-    sortDirection: "ASC"
+    sortDirection: "ASC",
+    isShownAddCountry: false,
 }
 
 const countryReducer = (state=initialState, action: CountryActionTypes) => {
@@ -35,6 +37,16 @@ const countryReducer = (state=initialState, action: CountryActionTypes) => {
                 ...state,
                 sortKey: action.payload.sortKey,
                 sortDirection: action.payload.sortDirection
+            }
+        case CountryTypes.SHOW_ADD_COUNTRY:
+            return{
+                ...state,
+                isShownAddCountry: action.payload
+            }
+        case CountryTypes.ADD_COUNTRY:
+            return{
+                ...state,
+                country: [...state.country, action.payload]
             }
         case CountryTypes.DELETE_COUNTRY:
             const idx = action.payload;

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import CountryTable from './CountryTable';
 
+
 const Wrapper = styled.main`
     margin: 30px auto;
     width: 90%;

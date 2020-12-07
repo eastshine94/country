@@ -31,7 +31,9 @@ const Wrapper = styled.section`
                 right: 8px;
             }
             &:last-child{
-                cursor: auto;
+                background: #000;
+                color: #fff;
+                font-size: 20px;
             }
         }
         & td {
@@ -39,6 +41,9 @@ const Wrapper = styled.section`
                 cursor: pointer;
                 background: #dd0000;
                 color: #fff;
+                &:hover{
+                    background: #b40000;
+                }
             }
         }
         & thead tr {
@@ -66,6 +71,7 @@ interface TableHeaderProps {
     sortDirection: SortDirectionTypes;
     sortKey: SortKeyTypes;
     changeSort(option: ChangeSortDto): void;
+    showAddCountry(isShown: boolean): void;
 }
 
 interface TableRowProps extends CountryDto {
@@ -80,7 +86,7 @@ interface TableContentProps {
 
 const TableHeader: React.FC<TableHeaderProps> = (props) => {
     const {sortDirection, sortKey} = props;
-    const { changeSort } = props;
+    const { changeSort, showAddCountry } = props;
     const headerData:Array<{name: string, key: SortKeyTypes}> = [
         {
             name: "코드",
@@ -126,7 +132,7 @@ const TableHeader: React.FC<TableHeaderProps> = (props) => {
         <thead>
             <tr>
                 {headerCols}
-                <th/>
+                <th onClick={() => showAddCountry(true)}> + </th>
             </tr>
         </thead>
     )
@@ -149,7 +155,7 @@ const TableRow: React.FC<TableRowProps> = (props) => {
 
 const TableContent:React.FC<TableContentProps> = (props) => {
     const { countryState } = props;
-    const { changeSort, deleteCountry, setCursor } = props.countryActions;
+    const { changeSort, deleteCountry, setCursor, showAddCountry } = props.countryActions;
     const { cursor, sortKey, sortDirection } = countryState;
     const countries = countryState.country;
 
@@ -192,7 +198,7 @@ const TableContent:React.FC<TableContentProps> = (props) => {
                     <col width="18%"/>
                     <col width="8%"/>
                 </colgroup>
-                <TableHeader {...countryState} changeSort= {changeSort}/>
+                <TableHeader {...countryState} changeSort= {changeSort} showAddCountry={showAddCountry}/>
                 <tbody>
                     {tableRows}
                 </tbody>
